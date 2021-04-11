@@ -40,7 +40,7 @@ public class ProductCommands {
 
     @ShellMethod("Print max price product")
     void printMaxPriceProduct() {
-        productService.MaxPriceProduct()
+        productService.maxPriceProduct()
                 .forEach(System.out::println);
     }
 

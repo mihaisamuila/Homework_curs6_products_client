@@ -12,10 +12,13 @@ import static org.springframework.http.HttpMethod.GET;
 
 @Service
 public class ProductService {
+
+    final String ROOT_URL = "http://localhost:8080/products";
+
     public List<Product> getAll() {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.exchange(
-                "http://localhost:8080/products",
+                ROOT_URL,
                 GET,
                 new HttpEntity<>(null),
                 new ParameterizedTypeReference<List<Product>>() {
@@ -25,13 +28,13 @@ public class ProductService {
 
     public Product getById(int productId) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject("http://localhost:8080/products/" + productId, Product.class);
+        return restTemplate.getForObject(ROOT_URL + "/" + productId, Product.class);
     }
 
-    public List<Product> getByCategory(String lookupCategory) {
+    public List<Product> getByCategory(String category) {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.exchange(
-                "http://localhost:8080/products/category/" + lookupCategory,
+                ROOT_URL + "?category=" + category,
                 GET,
                 new HttpEntity<>(null),
                 new ParameterizedTypeReference<List<Product>>() {
@@ -39,10 +42,10 @@ public class ProductService {
         ).getBody();
     }
 
-    public List<Product> MaxPriceProduct() {
+    public List<Product> maxPriceProduct() {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.exchange(
-                "http://localhost:8080/products/maxprice/",
+                ROOT_URL + "?maxprice=true",
                 GET,
                 new HttpEntity<>(null),
                 new ParameterizedTypeReference<List<Product>>() {
@@ -52,11 +55,11 @@ public class ProductService {
 
     public Product addProduct(Product newProduct) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForObject("http://localhost:8080/products", newProduct, Product.class);
+        return restTemplate.postForObject(ROOT_URL, newProduct, Product.class);
     }
 
-    public void deleteById(int lookupId) {
+    public void deleteById(int productId) {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.delete("http://localhost:8080/products/delete/" + lookupId);
+        restTemplate.delete(ROOT_URL + "/delete/" + productId);
     }
 }
